@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
-
 import { createPoll } from '../store/actions';
+import './CreatePoll.css';
 
 class CreatePoll extends Component {
   constructor(props) {
@@ -15,6 +15,7 @@ class CreatePoll extends Component {
     this.addAnswer = this.addAnswer.bind(this);
     this.handleAnswer = this.handleAnswer.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.removeOption = this.removeOption.bind(this);
   }
 
   handleChange(e) {
@@ -23,6 +24,14 @@ class CreatePoll extends Component {
 
   addAnswer() {
     this.setState({ options: [...this.state.options, ''] });
+  }
+
+  removeOption(index) {
+    if (this.state.options.length > 2) {
+      const options = [...this.state.options];
+      options.splice(index, 1);
+      this.setState({ options });
+    }
   }
 
   handleAnswer(e, index) {
@@ -38,37 +47,62 @@ class CreatePoll extends Component {
 
   render() {
     const options = this.state.options.map((option, i) => (
-      <Fragment key={i}>
-        <label className="form-label">option</label>
-        <input
-          className="form-input"
-          type="text"
-          value={options}
-          key={i}
-          onChange={e => this.handleAnswer(e, i)}
-        />
-      </Fragment>
+      <div key={i} className="option-container">
+        <div className="option-input-wrapper">
+          <input
+            className="option-input"
+            type="text"
+            placeholder={`Option ${i + 1}`}
+            value={option}
+            onChange={e => this.handleAnswer(e, i)}
+          />
+          {this.state.options.length > 2 && (
+            <button
+              type="button"
+              className="remove-option"
+              onClick={() => this.removeOption(i)}
+            >
+              ×
+            </button>
+          )}
+        </div>
+      </div>
     ));
 
     return (
-      <form className="form" onSubmit={this.handleSubmit}>
-        <label className="form-label" htmlFor="question">
-          question
-        </label>
-        <input
-          className="form-input"
-          type="text"
-          name="question"
-          value={this.state.question}
-          onChange={this.handleChange}
-        />
-        <div className="container">{options}</div>
-        <div className="buttons_center">
-          <button className="button" type="button" onClick={this.addAnswer}>
-            Add options
+      <form className="create-poll-form" onSubmit={this.handleSubmit}>
+        <div className="form-group">
+          <label className="form-label" htmlFor="question">
+            Your Question
+          </label>
+          <input
+            className="form-input"
+            type="text"
+            name="question"
+            id="question"
+            placeholder="What would you like to ask?"
+            value={this.state.question}
+            onChange={this.handleChange}
+            required
+          />
+        </div>
+
+        <div className="form-group">
+          <label className="form-label">Options</label>
+          <div className="options-list">{options}</div>
+          <button
+            type="button"
+            className="add-option-button"
+            onClick={this.addAnswer}
+          >
+            <span className="button-icon">+</span>
+            Add Option
           </button>
-          <button className="button" type="submit">
-            Submit
+        </div>
+
+        <div className="form-actions">
+          <button className="submit-button" type="submit">
+            Create Poll
           </button>
         </div>
       </form>

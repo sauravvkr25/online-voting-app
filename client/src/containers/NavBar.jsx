@@ -1,53 +1,85 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-
 import { logout } from '../store/actions';
+import './NavBar.css';
 
-const Navbar = ({ auth, logout }) => (
-  <nav className="navbar">
-    <div className="container">
-      <ul className="navbar-container">
-        <li>
+const Navbar = ({ auth, logout }) => {
+  const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowDropdown(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  const handleLogout = () => {
+    setShowDropdown(false);
+    logout();
+  };
+
+  return (
+    <nav className="navbar">
+      <div className="navbar-container">
+        <div className="navbar-left">
           <Link className="navbar-brand" to="/">
-            Poll app
+            <span className="brand-icon">🗳️</span>
+            <span className="brand-text">Poll App</span>
           </Link>
-        </li>
-        {!auth.isAuthenticated && (
-          <Fragment>
-            <li>
-              <Link className="navbar-item" to="/register">
-                Register
-              </Link>
-            </li>
-            <li>
-              <Link className="navbar-item" to="/login">
+        </div>
+
+        <div className="navbar-right">
+          {!auth.isAuthenticated ? (
+            <div className="auth-buttons">
+              <Link className="nav-button login" to="/login">
                 Login
               </Link>
-            </li>
-          </Fragment>
-        )}
-        {auth.isAuthenticated && (
-          <Fragment>
-            <li>
-              <Link className="navbar-item" to="/poll/new">
-                New Poll
+              <Link className="nav-button register" to="/register">
+                Register
               </Link>
-            </li>
-            <li>
-              <a className="navbar-item" onClick={logout}>
-                Logout
-              </a>
-            </li>
-          </Fragment>
-        )}
-      </ul>
+            </div>
+          ) : (
+            <div className="user-menu" ref={dropdownRef}>
+              <div className="profile-container">
+                <button 
+                  className="profile-button"
+                  onClick={() => setShowDropdown(!showDropdown)}
+                >
+                  <span className="user-avatar">
+                    {auth.user.username.charAt(0).toUpperCase()}
+                  </span>
+                  <span className="username">{auth.user.username}</span>
+                </button>
+                {showDropdown && (
+                  <div className="profile-dropdown">
+                    <button className="dropdown-item logout" onClick={handleLogout}>
+                      <span className="dropdown-icon">↪</span>
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
       {auth.isAuthenticated && (
-        <p className="navbar-user">Logged in as {auth.user.username}</p>
+        <Link className="fab" to="/poll/new">
+          <span className="fab-icon">+</span>
+          <span className="fab-text">New Poll</span>
+        </Link>
       )}
-    </div>
-  </nav>
-);
+    </nav>
+  );
+};
 
 export default connect(
   store => ({
