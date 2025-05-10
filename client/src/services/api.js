@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const host = 'http://localhost:4000/api';
+const host = process.env.REACT_APP_API_URL;
 
 export const setToken = token => {
   if (token) {
