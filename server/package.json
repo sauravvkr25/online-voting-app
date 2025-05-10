@@ -13,7 +13,8 @@
 		"mongoose": "^5.0.15"
 	},
 	"scripts": {
-		"start": "nodemon index.js",
+		"start": "node index.js",
+		"dev": "nodemon index.js",
 		"seed": "node seed.js"
 	},
 	"devDependencies": {
