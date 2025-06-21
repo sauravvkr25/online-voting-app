@@ -1,17 +1,31 @@
 .auth-form {
-  width: 100%;
+  max-width: 400px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  transform: translateY(20px);
+  animation: slideUp 0.6s ease forwards;
 }
 
 .form-group {
   margin-bottom: 1.5rem;
+  opacity: 0;
+  transform: translateX(-20px);
+  animation: slideIn 0.5s ease forwards;
 }
+
+.form-group:nth-child(1) { animation-delay: 0.2s; }
+.form-group:nth-child(2) { animation-delay: 0.4s; }
 
 .form-label {
   display: block;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #374151;
   margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #333;
+  font-size: 0.95rem;
 }
 
 .input-wrapper {
@@ -21,17 +35,18 @@
 .form-input {
   width: 100%;
   padding: 0.75rem 1rem;
+  border: 2px solid #e1e1e1;
+  border-radius: 8px;
   font-size: 1rem;
-  border: 2px solid #e5e7eb;
-  border-radius: 0.5rem;
-  background-color: #fff;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
+  background: #f8f9fa;
 }
 
 .form-input:focus {
   outline: none;
-  border-color: #6366f1;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+  border-color: #4a90e2;
+  background: white;
+  transform: scale(1.02);
 }
 
 .form-input::placeholder {
@@ -40,21 +55,25 @@
 
 .submit-button {
   width: 100%;
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  font-weight: 500;
-  color: #fff;
-  background-color: #6366f1;
+  padding: 0.875rem;
+  background: #4a90e2;
+  color: white;
   border: none;
-  border-radius: 0.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   margin-top: 1rem;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeIn 0.5s ease forwards 0.6s;
 }
 
 .submit-button:hover {
-  background-color: #4f46e5;
-  transform: translateY(-1px);
+  background: #357abd;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .submit-button:active {
@@ -64,23 +83,117 @@
 .auth-footer {
   margin-top: 1.5rem;
   text-align: center;
-  color: #6b7280;
-  font-size: 0.875rem;
+  color: #666;
+  font-size: 0.9rem;
+  opacity: 0;
+  animation: fadeIn 0.5s ease forwards 0.8s;
+}
+
+.link-wrapper {
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+.link-wrapper:hover {
+  transform: scale(1.1);
+}
+
+.link-wrapper:active {
+  transform: scale(0.95);
 }
 
 .auth-link {
-  color: #6366f1;
+  color: #4a90e2;
   text-decoration: none;
   font-weight: 500;
-  transition: color 0.2s ease;
+  margin-left: 0.25rem;
+  transition: color 0.3s ease;
 }
 
 .auth-link:hover {
-  color: #4f46e5;
-  text-decoration: underline;
+  color: #357abd;
+}
+
+/* Add smooth transitions for all interactive elements */
+* {
+  transition: all 0.3s ease;
+}
+
+/* Add a subtle gradient background to the page */
+body {
+  background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 1rem;
+}
+
+/* Add a subtle animation for form validation */
+.form-input:invalid {
+  border-color: #ff6b6b;
+  animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+/* Add a loading state for the submit button */
+.submit-button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  transform: scale(0.98);
+}
+
+/* Add a focus ring for accessibility */
+.form-input:focus-visible {
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+}
+
+/* Animations */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @media (max-width: 640px) {
+  .auth-form {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+
   .form-group {
     margin-bottom: 1.25rem;
   }
@@ -91,7 +204,7 @@
   }
 
   .submit-button {
-    padding: 0.625rem 1.25rem;
+    padding: 0.75rem;
     font-size: 0.875rem;
   }
 } 

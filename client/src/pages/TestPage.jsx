@@ -1,7 +1,7 @@
-import React, { Fragment } from 'react';
-import { withRouter } from 'react-router-dom';
-import decode from 'jwt-decode';
+import React from 'react';
+import jwtDecode from 'jwt-decode';
 import { Provider } from 'react-redux';
+import { Navigate } from 'react-router-dom';
 
 import { store } from '../store';
 import { setToken, setCurrentUser, addError } from '../store/actions';
@@ -11,43 +11,72 @@ import Poll from '../components/Poll';
 import Polls from '../components/Polls';
 import ErrorMessage from '../components/ErrorMessage';
 import CreatePoll from '../components/CreatePoll';
+import './TestPage.css';
 
+// Initialize auth state from localStorage if token exists
 if (localStorage.jwtToken) {
   setToken(localStorage.jwtToken);
   try {
-    store.dispatch(setCurrentUser(decode(localStorage.jwtToken)));
+    store.dispatch(setCurrentUser(jwtDecode(localStorage.jwtToken)));
   } catch (err) {
     store.dispatch(setCurrentUser({}));
     store.dispatch(addError(err));
   }
 }
 
-const UITest = props => (
-  <Provider store={store}>
-    <Fragment>
-      <h1>UI Test Page</h1>
+const TestPage = ({ isAuthenticated }) => {
+  // Redirect to login if not authenticated
+  if (!isAuthenticated) return <Navigate to="/login" />;
 
-      <h2>Testing Error Component: </h2>
-      <ErrorMessage />
-      <hr />
+  return (
+    <Provider store={store}>
+      <div className="test-page">
+        <div className="test-container">
+          <div className="test-header">
+            <h1>UI Test Page</h1>
+            <p>Test and verify all components in isolation</p>
+          </div>
 
-      <h2>Testing Auth Component: </h2>
-      <Auth />
-      <hr />
+          <div className="test-sections">
+            <section className="test-section">
+              <h2>Error Component Test</h2>
+              <div className="test-component">
+                <ErrorMessage />
+              </div>
+            </section>
 
-      <h2>Testing Create Poll Component: </h2>
-      <CreatePoll />
-      <hr />
+            <section className="test-section">
+              <h2>Auth Component Test</h2>
+              <div className="test-component">
+                <Auth />
+              </div>
+            </section>
 
-      <h2>Testing Polls Component: </h2>
-      <Polls {...props} />
-      <hr />
+            <section className="test-section">
+              <h2>Create Poll Component Test</h2>
+              <div className="test-component">
+                <CreatePoll />
+              </div>
+            </section>
 
-      <h2>Testing Poll Component: </h2>
-      <Poll />
-      <hr />
-    </Fragment>
-  </Provider>
-);
+            <section className="test-section">
+              <h2>Polls Component Test</h2>
+              <div className="test-component">
+                <Polls />
+              </div>
+            </section>
 
-export default withRouter(UITest);
+            <section className="test-section">
+              <h2>Poll Component Test</h2>
+              <div className="test-component">
+                <Poll />
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </Provider>
+  );
+};
+
+export default TestPage;

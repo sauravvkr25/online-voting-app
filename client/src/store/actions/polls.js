@@ -65,10 +65,19 @@ export const getCurrentPoll = path => {
 };
 
 export const vote = (path, data) => {
-  return async dispatch => {
+  return async (dispatch, getState) => {
     try {
       const poll = await API.call('post', `polls/${path}`, data);
       dispatch(setCurrentPoll(poll));
+      
+      // Update the polls list with the new poll data
+      const currentPolls = getState().polls;
+      const updatedPolls = currentPolls.map(p => 
+        p._id === poll._id ? poll : p
+      );
+      dispatch(setPolls(updatedPolls));
+      
+      dispatch(removeError());
     } catch (err) {
       const { error } = err.response.data;
       dispatch(addError(error));

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Switch, Route, withRouter } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 
 import { getCurrentPoll } from '../store/actions';
 import HomePage from '../pages/HomePage';
@@ -11,47 +11,42 @@ import TestPage from '../pages/TestPage';
 
 const RouteViews = ({ getCurrentPoll, auth }) => (
   <main className="container">
-    <Switch>
-      <Route exact path="/" render={props => <HomePage {...props} />} />
+    <Routes>
+      <Route path="/" element={<HomePage />} />
       <Route
-        exact
         path="/login"
-        render={() => (
+        element={
           <AuthPage authType="login" isAuthenticated={auth.isAuthenticated} />
-        )}
+        }
       />
       <Route
-        exact
         path="/register"
-        render={() => (
+        element={
           <AuthPage
             authType="register"
             isAuthenticated={auth.isAuthenticated}
           />
-        )}
+        }
       />
       <Route
-        exact
         path="/poll/new"
-        render={() => <CreatePollPage isAuthenticated={auth.isAuthenticated} />}
+        element={<CreatePollPage isAuthenticated={auth.isAuthenticated} />}
       />
       <Route
-        exact
         path="/poll/:id"
-        render={props => (
-          <PollPage getPoll={id => getCurrentPoll(id)} {...props} />
-        )}
+        element={<PollPage getPoll={id => getCurrentPoll(id)} />}
       />
-      <Route exact path="/test" render={() => <TestPage />} />
-    </Switch>
+      <Route
+        path="/test"
+        element={<TestPage isAuthenticated={auth.isAuthenticated} />}
+      />
+    </Routes>
   </main>
 );
 
-export default withRouter(
-  connect(
-    store => ({
-      auth: store.auth,
-    }),
-    { getCurrentPoll },
-  )(RouteViews),
-);
+export default connect(
+  store => ({
+    auth: store.auth,
+  }),
+  { getCurrentPoll },
+)(RouteViews);

@@ -4,6 +4,9 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 
+// Import models to ensure database connection
+require('./models');
+
 const routes = require('./routes');
 const handle = require('./handlers');
 

@@ -1,11 +1,11 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import CreatePoll from '../components/CreatePoll';
 import ErrorMessage from '../components/ErrorMessage';
 import './CreatePollPage.css';
 
 const CreatePollPage = ({ isAuthenticated }) => {
-  if (!isAuthenticated) return <Redirect to="/login" />;
+  if (!isAuthenticated) return <Navigate to="/login" />;
 
   return (
     <div className="create-poll-page">

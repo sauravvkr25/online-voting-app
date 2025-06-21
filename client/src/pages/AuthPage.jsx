@@ -1,11 +1,11 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import Auth from '../components/Auth';
 import ErrorMessage from '../components/ErrorMessage';
 import './AuthPage.css';
 
 const AuthPage = ({ authType, isAuthenticated }) => {
-  if (isAuthenticated) return <Redirect to="/" />;
+  if (isAuthenticated) return <Navigate to="/" />;
 
   return (
     <div className="auth-page">
@@ -26,3 +26,4 @@ const AuthPage = ({ authType, isAuthenticated }) => {
 };
 
 export default AuthPage;
+

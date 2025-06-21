@@ -1,10 +1,15 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
 import Poll from '../components/Poll';
 import ErrorMessage from '../components/ErrorMessage';
 import './PollPage.css';
 
-const PollPage = ({ match, getPoll, poll }) => {
-  getPoll(match.params.id);
+const PollPage = ({ getPoll, poll }) => {
+  const { id } = useParams();
+  
+  React.useEffect(() => {
+    getPoll(id);
+  }, [getPoll, id]);
 
   return (
     <div className="poll-page">

@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logout } from '../store/actions';
@@ -31,7 +31,13 @@ const Navbar = ({ auth, logout }) => {
       <div className="navbar-container">
         <div className="navbar-left">
           <Link className="navbar-brand" to="/">
-            <span className="brand-icon">🗳️</span>
+            <span 
+              className="brand-icon" 
+              role="img" 
+              aria-label="ballot box with ballot"
+            >
+              🗳️
+            </span>
             <span className="brand-text">Poll App</span>
           </Link>
         </div>

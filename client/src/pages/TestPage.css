@@ -1,0 +1,87 @@
+.test-page {
+  min-height: calc(100vh - 64px);
+  background: #f9fafb;
+  padding: 2rem 1rem;
+}
+
+.test-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  padding: 2rem;
+}
+
+.test-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.test-header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 0.5rem;
+}
+
+.test-header p {
+  color: #6b7280;
+  font-size: 1.125rem;
+}
+
+.test-sections {
+  display: grid;
+  gap: 2rem;
+}
+
+.test-section {
+  background: #f9fafb;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  border: 1px solid #e5e7eb;
+}
+
+.test-section h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.test-component {
+  background: white;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  border: 1px solid #e5e7eb;
+}
+
+@media (max-width: 640px) {
+  .test-page {
+    padding: 1rem;
+  }
+
+  .test-container {
+    padding: 1.5rem;
+  }
+
+  .test-header h1 {
+    font-size: 1.75rem;
+  }
+
+  .test-header p {
+    font-size: 1rem;
+  }
+
+  .test-section {
+    padding: 1rem;
+  }
+
+  .test-section h2 {
+    font-size: 1.125rem;
+  }
+} 

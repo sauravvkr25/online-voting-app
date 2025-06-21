@@ -1,95 +1,88 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { authUser, logout } from '../store/actions';
 import './Auth.css';
 
-class Auth extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      username: '',
-      password: '',
-    };
+const Auth = ({ authType, authUser }) => {
+  const [formData, setFormData] = useState({
+    username: '',
+    password: '',
+  });
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
-  handleChange(e) {
-    this.setState({ [e.target.name]: e.target.value });
-  }
-
-  handleSubmit(e) {
-    const { username, password } = this.state;
-    const { authType } = this.props;
+  const handleSubmit = (e) => {
     e.preventDefault();
-    this.props.authUser(authType || 'login', { username, password });
-  }
+    authUser(authType || 'login', formData);
+  };
 
-  render() {
-    const { username, password } = this.state;
-    const { authType } = this.props;
-    const isLogin = authType === 'login';
+  const isLogin = authType === 'login';
 
-    return (
-      <form className="auth-form" onSubmit={this.handleSubmit}>
-        <div className="form-group">
-          <label className="form-label" htmlFor="username">
-            Username
-          </label>
-          <div className="input-wrapper">
-            <input
-              type="text"
-              id="username"
-              name="username"
-              value={username}
-              onChange={this.handleChange}
-              autoComplete="off"
-              className="form-input"
-              placeholder="Enter your username"
-              required
-            />
-          </div>
+  return (
+    <form className="auth-form animate-in" onSubmit={handleSubmit}>
+      <div className="form-group animate-in">
+        <label className="form-label" htmlFor="username">
+          Username
+        </label>
+        <div className="input-wrapper">
+          <input
+            type="text"
+            id="username"
+            name="username"
+            value={formData.username}
+            onChange={handleChange}
+            autoComplete="off"
+            className="form-input"
+            placeholder="Enter your username"
+            required
+          />
         </div>
+      </div>
 
-        <div className="form-group">
-          <label className="form-label" htmlFor="password">
-            Password
-          </label>
-          <div className="input-wrapper">
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={password}
-              onChange={this.handleChange}
-              autoComplete="off"
-              className="form-input"
-              placeholder="Enter your password"
-              required
-            />
-          </div>
+      <div className="form-group animate-in">
+        <label className="form-label" htmlFor="password">
+          Password
+        </label>
+        <div className="input-wrapper">
+          <input
+            type="password"
+            id="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            autoComplete="off"
+            className="form-input"
+            placeholder="Enter your password"
+            required
+          />
         </div>
+      </div>
 
-        <button className="submit-button" type="submit">
-          {isLogin ? 'Sign In' : 'Create Account'}
-        </button>
+      <button
+        className="submit-button animate-in"
+        type="submit"
+      >
+        {isLogin ? 'Sign In' : 'Create Account'}
+      </button>
 
-        <div className="auth-footer">
-          <p>
-            {isLogin ? "Don't have an account? " : 'Already have an account? '}
+      <div className="auth-footer animate-in">
+        <p>
+          {isLogin ? "Don't have an account? " : 'Already have an account? '}
+          <span className="link-wrapper">
             <Link
               to={isLogin ? '/register' : '/login'}
               className="auth-link"
             >
               {isLogin ? 'Sign up' : 'Sign in'}
             </Link>
-          </p>
-        </div>
-      </form>
-    );
-  }
-}
+          </span>
+        </p>
+      </div>
+    </form>
+  );
+};
 
 export default connect(() => ({}), { authUser, logout })(Auth);

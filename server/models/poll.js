@@ -23,13 +23,15 @@ const pollSchema = new mongoose.Schema({
   voted: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
 });
 
-pollSchema.pre('remove', async function(next) {
+pollSchema.pre('deleteOne', { document: true, query: false }, async function(next) {
   try {
     const user = await User.findById(this.user);
-    user.polls = user.polls.filter(
-      poll => poll._id.toString() !== this._id.toString(),
-    );
-    await user.save();
+    if (user) {
+      user.polls = user.polls.filter(
+        poll => poll._id.toString() !== this._id.toString(),
+      );
+      await user.save();
+    }
     return next();
   } catch (err) {
     return next(err);
